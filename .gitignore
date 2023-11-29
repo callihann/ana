@@ -1,0 +1,9 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore contents of the dist folder
+/dist/*
+
+# Ignore VS Code config files
+.vscode
+.vscode/*

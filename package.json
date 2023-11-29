@@ -4,8 +4,23 @@
   "description": "Generate, check, and play anagrams",
   "main": "index.js",
   "scripts": {
+	"start": "node index.js",
+	"build": "pkg .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pkg": "^5.8.1"
+  },	
+  "bin": "index.js",
+  "pkg": {
+	"assets": [ "words_alpha.txt" ],
+	"targets": [
+		"node16-linux-x64",
+		"node16-macos-x64",
+		"node16-win-x64"
+	],
+	"outputPath": "dist"
+  }
 }

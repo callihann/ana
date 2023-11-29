@@ -1,6 +1,8 @@
 const fs = require("fs").promises;
+const path = require("path");
+
 const scoreArray = [100, 400, 800, 1200, 1600, 2000];
-const wordListPromise = fs.readFile("words_alpha.txt", "utf8");
+const wordListPromise = fs.readFile(path.join(__dirname, "./words_alpha.txt"), "utf8");
 const usedWords = new Set();
 
 async function randomWord(length) {
@@ -65,7 +67,7 @@ async function main() {
 		output: process.stdout,
 	});
 	console.log("Enter Word (or 'exit' to quit): \n");
-    console.log(result);
+	console.log(result);
 	const getUserInput = async () => {
 		readline.question(`${score} > `, async (name) => {
 			if (name === "exit") {
