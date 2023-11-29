@@ -1,9 +1,57 @@
 const fs = require("fs").promises;
 const path = require("path");
+const argv = require("minimist")(process.argv.slice(2));
 
 const scoreArray = [100, 400, 800, 1200, 1600, 2000];
 const wordListPromise = fs.readFile(path.join(__dirname, "./words_alpha.txt"), "utf8");
 const usedWords = new Set();
+
+function getPermutations(lst) {
+	let returnedList = [];
+	function getPermutationsHelper(lst, length) {
+		if (length === 0) return [""];
+		if (length === 1) return lst;
+		let result = [];
+		for (let i = 0; i < lst.length; i++) {
+			let firstChar = lst[i];
+			let charsLeft = lst.substring(0, i) + lst.substring(i + 1);
+			let innerPermutations = getPermutationsHelper(charsLeft, length - 1);
+			for (let permutation of innerPermutations) {
+				result.push(firstChar + permutation);
+			}
+		}
+		return result;
+	}
+	for (let i = 0; i <= lst.length; i++) {
+		for (let j = 1; j <= i; j++) {
+			let subsets = getPermutationsHelper(lst, j);
+			for (let subset of subsets) {
+				if (subset.length >= 3) {
+					// Check if the length of the subset is at least 3
+					let possible = "";
+					for (let letter of subset) {
+						possible += letter;
+					}
+					returnedList.push(possible);
+				}
+			}
+		}
+	}
+	return returnedList;
+}
+
+async function findAllWords(word) {
+	const data = await wordListPromise;
+	let words = getPermutations(word);
+	let lines = data.split("\r\n");
+	let out = [];
+	words.forEach((item) => {
+		if (lines.includes(item)) {
+			out.push(item);
+		}
+	});
+	return out;
+}
 
 /**
  * Generates a random word of the specified length.
@@ -43,6 +91,7 @@ function shuffleLetters(word) {
  * @returns {boolean} - Returns true if the word can be validated, false otherwise.
  */
 async function checkWord(word, result) {
+	// potentially deprecate checkWord at some point?
 	const data = await wordListPromise;
 	let lines = data.split("\r\n");
 	let counter = 0;
@@ -70,26 +119,67 @@ async function checkWord(word, result) {
 }
 
 async function main() {
-	let result = await randomWord(6);
+	// worst piece of code I have ever written
+	let theoreticalScore = 0;
 	let score = 0;
 	const readline = require("readline").createInterface({
 		input: process.stdin,
 		output: process.stdout,
 	});
-	console.log("Enter Word (or 'exit' to quit): \n");
-	console.log(result);
-	const getUserInput = async () => {
-		readline.question(`${score} > `, async (name) => {
-			if (name === "exit") {
-				readline.close();
-				return;
-			} else if (await checkWord(name, result)) {
-				score += scoreArray[name.length - 3];
-			}
-			getUserInput();
+
+	if (argv["h"] || argv["help"]) {
+		console.log("Usage: node index.js [arguments]");
+		console.log("Options:");
+		console.log("-h, --help\t\tShow this help message and exit.");
+		console.log("-t, \t\tDisplay theoretical score.");
+		process.exit(0);
+	} else if (argv["t"]) {
+		let result = await randomWord(6);
+		let res = await findAllWords(result);
+
+		res.forEach((element) => {
+			theoreticalScore += scoreArray[element.length - 3];
 		});
-	};
-	getUserInput();
+
+		console.log("Enter Words (or 'exit' to quit): \n");
+		console.log(result);
+		const getUserInput = async () => {
+			readline.question(`${score} / ${theoreticalScore} > `, async (name) => {
+				if (name === "exit") {
+					console.log(`You got ${usedWords.size} of ${res.length} words!`);
+					readline.close();
+					return;
+				} else if (await checkWord(name, result)) {
+					score += scoreArray[name.length - 3];
+				}
+				getUserInput();
+			});
+		};
+		getUserInput();
+	} else {
+		let result = await randomWord(6);
+		let res = await findAllWords(result);
+
+		res.forEach((element) => {
+			theoreticalScore += scoreArray[element.length - 3];
+		});
+
+		console.log("Enter Words (or 'exit' to quit): \n");
+		console.log(result);
+		const getUserInput = async () => {
+			readline.question(`${score} > `, async (name) => {
+				if (name === "exit") {
+					readline.close();
+					console.log(`You got ${usedWords.size} of ${res.length} words!`);
+					return;
+				} else if (await checkWord(name, result)) {
+					score += scoreArray[name.length - 3];
+				}
+				getUserInput();
+			});
+		};
+		getUserInput();
+	}
 }
 
-main();
+main(); // entry point
