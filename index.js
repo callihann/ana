@@ -108,27 +108,8 @@ function shuffleLetters(word) {
  * @param {string} result - Used to determine whether the checked word is valid.
  * @returns {boolean} - Returns true if the word can be validated, false otherwise.
  */
-async function checkWord(word, result) {
-	// potentially deprecate checkWord at some point?
-	const data = await wordListPromise;
-	let lines = data.split("\r\n");
-	let counter = 0;
-	const letterCount = new Map();
-	for (const letter of result) {
-		letterCount.set(letter, (letterCount.get(letter) || 0) + 1);
-	}
-	for (const letter of word) {
-		if (!letterCount.has(letter) || letterCount.get(letter) <= 0) {
-			return false;
-		}
-		letterCount.set(letter, letterCount.get(letter) - 1);
-		counter++;
-	}
-	if (usedWords.has(word)) {
-		return false;
-	} else if (counter !== word.length) {
-		return false;
-	} else if (lines.includes(word)) {
+async function checkWord(word, res) {
+	if (res.includes(word) && !usedWords.has(word)) {
 		usedWords.add(word);
 		return true;
 	} else {
@@ -171,7 +152,7 @@ async function main() {
 				console.log(`You got ${usedWords.size} of ${res.length} words!`);
 				readline.close();
 				return;
-			} else if (checkWord(name, result)) {
+			} else if (await checkWord(name, res)) {
 				score += scoreArray[name.length - 3];
 			}
 			getUserInput();
