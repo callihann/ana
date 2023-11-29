@@ -144,25 +144,17 @@ async function main() {
 	// worst piece of code I have ever written
 	let theoreticalScore = 0;
 	let score = 0;
-	let display = ``;
 	const readline = require("readline").createInterface({
 		input: process.stdin,
 		output: process.stdout,
 	});
-	const getScore = async () => {
-		return score;
-	};
-	const getTheoreticalScore = async () => {
-		return theoreticalScore;
-	};
+
 	if (argv["h"] || argv["help"]) {
 		console.log("Usage: node index.js [arguments]");
 		console.log("Options:");
 		console.log("-h, --help\t\tShow this help message and exit.");
 		console.log("-t, \t\tDisplay theoretical score.");
 		process.exit(0);
-	} else if (argv["t"]) {
-		display = `${score} / ${theoreticalScore}`;
 	}
 	let result = await randomWord(6);
 	let res = await findAllWords(result);
@@ -174,7 +166,7 @@ async function main() {
 	console.log("Enter Words (or 'exit' to quit): \n");
 	console.log(result);
 	const getUserInput = async () => {
-		readline.question(`${score} / ${theoreticalScore} > `, async (name) => {
+		readline.question(argv["t"] ? `${score} / ${theoreticalScore} > ` : `${score} > `, async (name) => {
 			if (name === "exit") {
 				console.log(`You got ${usedWords.size} of ${res.length} words!`);
 				readline.close();
