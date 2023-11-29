@@ -127,6 +127,7 @@ async function main() {
 	// worst piece of code I have ever written
 	let theoreticalScore = 0;
 	let score = 0;
+	let length = 5;
 	const readline = require("readline").createInterface({
 		input: process.stdin,
 		output: process.stdout,
@@ -137,11 +138,20 @@ async function main() {
 		console.log("Options:");
 		console.log("-h, --help\t\tShow this help message and exit.");
 		console.log("-t, \t\t\tDisplay theoretical score.");
+		console.log("-l, --length\t\tSpecify the length of the characters to generate. Default is 5 and minimum is 3.");
+		console.log("-o, --out\t\t on exit display the list of words you missed.");
 		console.log("How to play:");
 		console.log("Given a random set of letters provided by the program, try to form as many words as possible.");
 		process.exit(0);
 	}
-	let result = await randomWord(6);
+	if (argv["l"] || argv["length"]) {
+		if (argv["l"] < 3 || argv["length"] < 3) {
+			console.error("Length must be at least 3.");
+			process.exit(1);
+		}
+		length = argv["l"];
+	}
+	let result = await randomWord(length);
 	let res = await findAllWords(result);
 
 	res.forEach((element) => {
@@ -154,10 +164,23 @@ async function main() {
 		readline.question(argv["t"] ? `${score} / ${theoreticalScore} > ` : `${score} > `, async (name) => {
 			if (name === "exit") {
 				console.log(`You got ${usedWords.size} of ${res.length} words!`);
+				if (argv["o"] || argv["out"]) {
+					console.log("Words you missed: ");
+					for (let word of res) {
+						if (!usedWords.has(word)) {
+							console.log(word);
+						}
+					}
+				}
 				readline.close();
 				return;
 			} else if (await checkWord(name, res)) {
 				score += scoreArray[name.length - 3];
+				if (score === theoreticalScore) {
+					console.log("You got all possible words!");
+					readline.close();
+					return;
+				}
 			}
 			getUserInput();
 		});
