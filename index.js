@@ -131,10 +131,12 @@ async function main() {
 	});
 
 	if (argv["h"] || argv["help"]) {
-		console.log("Usage: node index.js [arguments]");
+		console.log("Usage: node index.js [options]");
 		console.log("Options:");
 		console.log("-h, --help\t\tShow this help message and exit.");
-		console.log("-t, \t\tDisplay theoretical score.");
+		console.log("-t, \t\t\tDisplay theoretical score.");
+		console.log("How to play:");
+		console.log("Given a random set of letters provided by the program, try to form as many words as possible.");
 		process.exit(0);
 	}
 	let result = await randomWord(6);
