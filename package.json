@@ -1,6 +1,6 @@
 {
   "name": "anagrams",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate, check, and play anagrams",
   "main": "index.js",
   "scripts": {
