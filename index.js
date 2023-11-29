@@ -171,7 +171,7 @@ async function main() {
 				console.log(`You got ${usedWords.size} of ${res.length} words!`);
 				readline.close();
 				return;
-			} else if (await checkWord(name, result)) {
+			} else if (checkWord(name, result)) {
 				score += scoreArray[name.length - 3];
 			}
 			getUserInput();
