@@ -138,7 +138,7 @@ async function main() {
 		console.log("Options:");
 		console.log("-h, --help\t\tShow this help message and exit.");
 		console.log("-t, \t\t\tDisplay theoretical score.");
-		console.log("-l, --length\t\tSpecify the length of the characters to generate. Default is 5 and minimum is 3.");
+		console.log("-l, --length [int]\t\tSpecify the length of the characters to generate. Default is 5 and minimum is 3.");
 		console.log("-o, --out\t\t on exit display the list of words you missed.");
 		console.log("How to play:");
 		console.log("Given a random set of letters provided by the program, try to form as many words as possible.");
