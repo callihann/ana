@@ -5,6 +5,11 @@ const scoreArray = [100, 400, 800, 1200, 1600, 2000];
 const wordListPromise = fs.readFile(path.join(__dirname, "./words_alpha.txt"), "utf8");
 const usedWords = new Set();
 
+/**
+ * Generates a random word of the specified length.
+ * @param {number} length - The length of the word to generate.
+ * @returns {Promise<string>} A promise that resolves to a randomly generated word which has been shuffled.
+ */
 async function randomWord(length) {
 	const re = new RegExp(`\\b\\w{${length},${length}}\\b`, "gm");
 	try {
@@ -17,6 +22,11 @@ async function randomWord(length) {
 	}
 }
 
+/**
+ * Shuffles the letters of a word.
+ * @param {string} word - The word to shuffle.
+ * @returns {string} The shuffled word.
+ */
 function shuffleLetters(word) {
 	let letters = word.split("");
 	for (let i = letters.length - 1; i > 0; i--) {
