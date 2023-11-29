@@ -1,14 +1,14 @@
 {
-  "name": "anagrams",
+  "name": "ana",
   "version": "1.0.1",
   "description": "Generate, check, and play anagrams",
-  "main": "index.js",
   "scripts": {
     "start": "echo \"Error: this command has been deprecated\" && exit 1",
     "build": "pkg .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Marlowe Oliver",
+  "repository": {"type": "git", "url": "https://github.com/callihann/anagram-in-terminal.git"},
   "license": "ISC",
   "dependencies": {
     "minimist": "^1.2.8",
