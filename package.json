@@ -1,5 +1,5 @@
 {
-  "name": "ana",
+  "name": "@callihann/ana",
   "version": "1.0.1",
   "description": "Generate, check, and play anagrams",
   "scripts": {
