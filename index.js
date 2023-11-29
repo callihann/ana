@@ -103,10 +103,10 @@ function shuffleLetters(word) {
 }
 
 /**
- * Checks if a given word can be formed using the letters in the result.
- * @param {string} word - The word to be checked.
- * @param {string} result - Used to determine whether the checked word is valid.
- * @returns {boolean} - Returns true if the word can be validated, false otherwise.
+ * Checks if a word is present in the given array and has not been used before.
+ * @param {string} word - The word to check.
+ * @param {string[]} res - The array to search for the word.
+ * @returns {boolean} - True if the word is present and not used before, false otherwise.
  */
 async function checkWord(word, res) {
 	if (res.includes(word) && !usedWords.has(word)) {
