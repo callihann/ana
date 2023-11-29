@@ -6,9 +6,21 @@ const scoreArray = [100, 400, 800, 1200, 1600, 2000];
 const wordListPromise = fs.readFile(path.join(__dirname, "./words_alpha.txt"), "utf8");
 const usedWords = new Set();
 
+/**
+ * Generates all possible permutations of a given string.
+ * 
+ * @param {string} lst - The input string to generate permutations from.
+ * @returns {string[]} - An array of all possible permutations.
+ */
 function getPermutations(lst) {
 	let returnedList = [];
-	function getPermutationsHelper(lst, length) {
+    /**
+     * Helper function to generate all permutations of a given string.
+     * @param {string} lst - The string to generate permutations from.
+     * @param {number} length - The length of each permutation.
+     * @returns {string[]} - An array of all permutations.
+     */
+	function getPermutationsHelper(lst, length) { // so so so ugly
 		if (length === 0) return [""];
 		if (length === 1) return lst;
 		let result = [];
@@ -40,6 +52,11 @@ function getPermutations(lst) {
 	return returnedList;
 }
 
+/**
+ * Finds all the words that can be formed by permuting the letters of a given word.
+ * @param {string} word - The input word.
+ * @returns {Promise<string[]>} - A promise that resolves to an array of words formed by permuting the letters of the input word.
+ */
 async function findAllWords(word) {
 	const data = await wordListPromise;
 	let words = getPermutations(word);
@@ -118,6 +135,10 @@ async function checkWord(word, result) {
 	}
 }
 
+/**
+ * The main function that runs the anagram game.
+ * @returns {Promise<void>} A promise that resolves when the game is finished.
+ */
 async function main() {
 	// worst piece of code I have ever written
 	let theoreticalScore = 0;
