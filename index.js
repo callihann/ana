@@ -24,6 +24,12 @@ function shuffleLetters(word) {
 	return letters.join("");
 }
 
+/**
+ * Checks if a given word can be formed using the letters in the result.
+ * @param {string} word - The word to be checked.
+ * @param {string} result - Used to determine whether the checked word is valid.
+ * @returns {boolean} - Returns true if the word can be validated, false otherwise.
+ */
 async function checkWord(word, result) {
 	const data = await wordListPromise;
 	let lines = data.split("\r\n");
