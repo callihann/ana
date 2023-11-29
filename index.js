@@ -140,6 +140,7 @@ async function main() {
 		console.log("-t, \t\t\tDisplay theoretical score.");
 		console.log("-l, --length [int]\t\tSpecify the length of the characters to generate. Default is 5 and minimum is 3.");
 		console.log("-o, --out\t\t on exit display the list of words you missed.");
+		console.log("-s, --stars\t\tDisplay some stars.");
 		console.log("How to play:");
 		console.log("Given a random set of letters provided by the program, try to form as many words as possible.");
 		process.exit(0);
@@ -150,6 +151,12 @@ async function main() {
 			process.exit(1);
 		}
 		length = argv["l"];
+	}
+	if (argv["s"] || argv["stars"]) {
+		console.log(
+			`\u02DA\u3000\u3000\u3000\u3000\u2726\u3000\u3000\u3000.\u3000\u3000. \u3000\u2008\u02DA\u3000.\u3000\u3000\u3000\u3000\u3000 . \u2726\u3000\u3000\u3000 \u3000\u02DA\u3000\u3000\u3000\u3000 . \u2605\u22C6.\r\n\u3000\u3000\u3000.\u2002\u2002 \u3000\u3000\u02DA\u3000\u3000 \u3000\u3000*\u3000\u3000 \u3000\u3000\u2726\u3000\u3000\u3000.\u3000\u3000.\u3000\u3000\u3000\u2726\u3000\u02DA \u3000\u3000\u3000\u3000\u2008\u02DA\u3000.\u02DA\u3000\u3000\u3000\u3000\u3000\u3000.\u3000\u3000. \u3000\u2008\u02DA\u3000.\u3000\u3000\u3000\u3000 \u3000\u3000 \u3000\u3000\u3000\u3000 \u2726`
+		);
+		process.exit(0);
 	}
 	let result = await randomWord(length);
 	let res = await findAllWords(result);
