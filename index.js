@@ -8,19 +8,20 @@ const usedWords = new Set();
 
 /**
  * Generates all possible permutations of a given string.
- * 
+ *
  * @param {string} lst - The input string to generate permutations from.
  * @returns {string[]} - An array of all possible permutations.
  */
 function getPermutations(lst) {
 	let returnedList = [];
-    /**
-     * Helper function to generate all permutations of a given string.
-     * @param {string} lst - The string to generate permutations from.
-     * @param {number} length - The length of each permutation.
-     * @returns {string[]} - An array of all permutations.
-     */
-	function getPermutationsHelper(lst, length) { // so so so ugly
+	/**
+	 * Helper function to generate all permutations of a given string.
+	 * @param {string} lst - The string to generate permutations from.
+	 * @param {number} length - The length of each permutation.
+	 * @returns {string[]} - An array of all permutations.
+	 */
+	function getPermutationsHelper(lst, length) {
+		// so so so ugly
 		if (length === 0) return [""];
 		if (length === 1) return lst;
 		let result = [];
@@ -143,11 +144,17 @@ async function main() {
 	// worst piece of code I have ever written
 	let theoreticalScore = 0;
 	let score = 0;
+	let display = ``;
 	const readline = require("readline").createInterface({
 		input: process.stdin,
 		output: process.stdout,
 	});
-
+	const getScore = async () => {
+		return score;
+	};
+	const getTheoreticalScore = async () => {
+		return theoreticalScore;
+	};
 	if (argv["h"] || argv["help"]) {
 		console.log("Usage: node index.js [arguments]");
 		console.log("Options:");
@@ -155,52 +162,30 @@ async function main() {
 		console.log("-t, \t\tDisplay theoretical score.");
 		process.exit(0);
 	} else if (argv["t"]) {
-		let result = await randomWord(6);
-		let res = await findAllWords(result);
-
-		res.forEach((element) => {
-			theoreticalScore += scoreArray[element.length - 3];
-		});
-
-		console.log("Enter Words (or 'exit' to quit): \n");
-		console.log(result);
-		const getUserInput = async () => {
-			readline.question(`${score} / ${theoreticalScore} > `, async (name) => {
-				if (name === "exit") {
-					console.log(`You got ${usedWords.size} of ${res.length} words!`);
-					readline.close();
-					return;
-				} else if (await checkWord(name, result)) {
-					score += scoreArray[name.length - 3];
-				}
-				getUserInput();
-			});
-		};
-		getUserInput();
-	} else {
-		let result = await randomWord(6);
-		let res = await findAllWords(result);
-
-		res.forEach((element) => {
-			theoreticalScore += scoreArray[element.length - 3];
-		});
-
-		console.log("Enter Words (or 'exit' to quit): \n");
-		console.log(result);
-		const getUserInput = async () => {
-			readline.question(`${score} > `, async (name) => {
-				if (name === "exit") {
-					readline.close();
-					console.log(`You got ${usedWords.size} of ${res.length} words!`);
-					return;
-				} else if (await checkWord(name, result)) {
-					score += scoreArray[name.length - 3];
-				}
-				getUserInput();
-			});
-		};
-		getUserInput();
+		display = `${score} / ${theoreticalScore}`;
 	}
+	let result = await randomWord(6);
+	let res = await findAllWords(result);
+
+	res.forEach((element) => {
+		theoreticalScore += scoreArray[element.length - 3];
+	});
+
+	console.log("Enter Words (or 'exit' to quit): \n");
+	console.log(result);
+	const getUserInput = async () => {
+		readline.question(`${score} / ${theoreticalScore} > `, async (name) => {
+			if (name === "exit") {
+				console.log(`You got ${usedWords.size} of ${res.length} words!`);
+				readline.close();
+				return;
+			} else if (await checkWord(name, result)) {
+				score += scoreArray[name.length - 3];
+			}
+			getUserInput();
+		});
+	};
+	getUserInput();
 }
 
 main(); // entry point
