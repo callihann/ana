@@ -1,6 +1,6 @@
 {
   "name": "@marlowemarlowe/ana",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generate, check, and play anagrams",
   "scripts": {
     "start": "echo \"Error: this command has been deprecated\" && exit 1",
